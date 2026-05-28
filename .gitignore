@@ -1,0 +1,26 @@
+# Local Claude Code settings (machine-specific, holds credentials)
+.claude/settings.local.json
+
+# Environment files (credentials)
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+
+# Working drafts that shouldn't be committed
+outputs/**/draft-*
+outputs/**/*.tmp
+
+# Logs
+*.log
+
+# Node (if you add tooling later)
+node_modules/
