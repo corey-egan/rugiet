@@ -1,0 +1,249 @@
+/* ────────────────────────────────────────────────────────────────────
+   RUGIET — brand tokens for Braze IAM templates
+   ────────────────────────────────────────────────────────────────────
+
+   This file is a REFERENCE for designers building Braze in-app message
+   templates. It is NOT loaded by any IAM template at runtime — every
+   IAM is a self-contained HTML document and must inline the tokens it
+   uses (Braze does not let templates link to external stylesheets in
+   most surfaces). Copy what you need from here into your template.
+
+   Source of truth: the full Rugiet Design System at
+   https://api.anthropic.com/v1/design/h/T02dC9U85lCuEhqO5GDQVA
+   (handoff bundle by Claude Design). This file is a focused, IAM-sized
+   slice of that system. When the design system updates, sync the
+   relevant tokens back into this file.
+
+   Font hosting: brand fonts are committed to ./fonts/ for local
+   preview, but for Braze deployment they must be uploaded once via
+   Settings → Media Library → Font Assets so every IAM in the workspace
+   can reference the appboy-images.com URLs.
+   ──────────────────────────────────────────────────────────────────── */
+
+/* ── Brand fonts (Pangram Pangram, licensed) ───────────────────────── */
+/* Each @font-face has two src entries: the first points at the Braze
+   CDN URL (filled in after the file is uploaded), the second falls
+   back to the local copy under ./fonts/ so local preview works. */
+
+@font-face {
+  font-family: 'Review';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: local('Review Regular'),
+       url('https://appboy-images.com/appboy/communication/assets/font_assets/files/REPLACE_REVIEW_REGULAR/original.woff2') format('woff2'),
+       url('./fonts/Review-Regular-Web.woff2') format('woff2'),
+       url('./fonts/Review-Regular.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Review';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: local('Review Bold'),
+       url('https://appboy-images.com/appboy/communication/assets/font_assets/files/REPLACE_REVIEW_BOLD/original.otf') format('opentype'),
+       url('./fonts/Review-Bold.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Review Wide';
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: local('Review Wide Black'),
+       url('https://appboy-images.com/appboy/communication/assets/font_assets/files/REPLACE_REVIEWWIDE_BLACK/original.otf') format('opentype'),
+       url('./fonts/ReviewWide-Black.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Redward Mono';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: local('Redward Mono Regular'),
+       url('https://appboy-images.com/appboy/communication/assets/font_assets/files/REPLACE_REDWARDMONO_REGULAR/original.woff2') format('woff2'),
+       url('./fonts/Redward-Mono-Regular.woff2') format('woff2'),
+       url('./fonts/Redward-Mono-Regular.otf') format('opentype');
+}
+
+:root {
+  /* ── Core ──────────────────────────────────────────────────────── */
+  --rugiet-black:   #000000;
+  --rugiet-white:   #FFFFFF;
+  --rugiet-orange:  #FFA202; /* the single brand accent */
+
+  /* ── Editorial neutrals ────────────────────────────────────────── */
+  --rugiet-cream:        #FFFCF9; /* default editorial background */
+  --rugiet-cream-deep:   #F6F7EF;
+
+  /* ── Gray ramp (canonical brand naming) ────────────────────────── */
+  --rugiet-gray-10:  #E7E5E4;
+  --rugiet-gray-20:  #D7D3D1;
+  --rugiet-gray-30:  #A8A29F;
+  --rugiet-gray-40:  #78716C; /* shared with gray-50 */
+  --rugiet-gray-60:  #292524;
+  --rugiet-gray-70:  #1B1917; /* shared with gray-80 and gray-100 */
+
+  /* ── Signal / accent ramp (yellow → orange → red) ──────────────── */
+  --rugiet-light-yellow:  #FFF9E6;
+  --rugiet-medium-yellow: #FFECB2;
+  --rugiet-dark-yellow:   #FFD966;
+  --rugiet-light-orange:  #FFA202; /* alias: --rugiet-orange */
+  --rugiet-dark-orange:   #FF5600; /* hover-on-orange and rare emphasis */
+  --rugiet-light-red:     #CC0100;
+  --rugiet-medium-red:    #800000;
+  --rugiet-dark-red:      #260000;
+
+  /* ── Product accent colors (per SKU; only use on that SKU) ─────── */
+  --rugiet-product-ready:    #0F3D3D; /* Ready — deep teal */
+  --rugiet-product-recharge: #B6ACE3; /* Recharge — lavender */
+  --rugiet-product-grower:   #B66E4E; /* Grower — terracotta */
+  --rugiet-product-daily:    #C9C2E6;
+  --rugiet-product-golong:   #6C8A6A;
+  --rugiet-product-trt:      #4B5563;
+  --rugiet-product-enclo:    #C7B299;
+
+  /* ── Type families ─────────────────────────────────────────────── */
+  --rugiet-font-display: 'Review Wide', 'Archivo Black', 'Arial Black', system-ui, sans-serif;
+  --rugiet-font-text:    'Review', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --rugiet-font-mono:    'Redward Mono', 'JetBrains Mono', ui-monospace, monospace;
+
+  /* ── Type ramp ─────────────────────────────────────────────────── */
+  --rugiet-text-display-size:  36px; /* IAM-sized hero; the website ramp goes up to 88+ */
+  --rugiet-text-display-line:  0.9;
+  --rugiet-text-display-track: -0.02em;
+
+  --rugiet-text-h3-size:       20px;
+  --rugiet-text-h3-line:       1.1;
+  --rugiet-text-h3-track:      -0.01em;
+
+  --rugiet-text-body-size:     14px; /* base unit of the body scale */
+  --rugiet-text-body-line:     1.4;
+  --rugiet-text-body-track:    0.01em;
+
+  --rugiet-text-mono-size:     12px;
+  --rugiet-text-mono-line:     1.3;
+  --rugiet-text-mono-track:    0.06em; /* +6% in IAM eyebrows */
+
+  --rugiet-text-button-size:   13px;
+  --rugiet-text-button-line:   1;
+  --rugiet-text-button-track:  0.04em;
+
+  /* ── Radii ─────────────────────────────────────────────────────── */
+  --rugiet-radius-sharp: 0;    /* buttons, dividers, editorial cards */
+  --rugiet-radius-card:  4px;
+  --rugiet-radius-pill:  100px; /* chips, tags, carousel dots only */
+
+  /* ── Motion ────────────────────────────────────────────────────── */
+  --rugiet-ease-out: cubic-bezier(0.2, 0, 0, 1);
+  --rugiet-dur-fast: 150ms;
+  --rugiet-dur-base: 240ms;
+}
+
+/* ── Reset / base type ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  background: var(--rugiet-cream);
+  color: var(--rugiet-black);
+  font-family: var(--rugiet-font-text);
+  font-size: var(--rugiet-text-body-size);
+  line-height: var(--rugiet-text-body-line);
+  letter-spacing: var(--rugiet-text-body-track);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Semantic type roles ──────────────────────────────────────────── */
+.rugiet-display {
+  font-family: var(--rugiet-font-display);
+  font-weight: 900;
+  font-size: var(--rugiet-text-display-size);
+  line-height: var(--rugiet-text-display-line);
+  letter-spacing: var(--rugiet-text-display-track);
+  text-transform: uppercase;
+  margin: 0;
+}
+.rugiet-h3 {
+  font-family: var(--rugiet-font-text);
+  font-weight: 700;
+  font-size: var(--rugiet-text-h3-size);
+  line-height: var(--rugiet-text-h3-line);
+  letter-spacing: var(--rugiet-text-h3-track);
+  margin: 0;
+}
+.rugiet-eyebrow,
+.rugiet-mono {
+  font-family: var(--rugiet-font-mono);
+  font-weight: 400;
+  font-size: var(--rugiet-text-mono-size);
+  line-height: var(--rugiet-text-mono-line);
+  letter-spacing: var(--rugiet-text-mono-track);
+  text-transform: uppercase;
+}
+.rugiet-body {
+  font-family: var(--rugiet-font-text);
+  font-weight: 400;
+  font-size: var(--rugiet-text-body-size);
+  line-height: var(--rugiet-text-body-line);
+  letter-spacing: var(--rugiet-text-body-track);
+}
+.rugiet-button-label {
+  font-family: var(--rugiet-font-text);
+  font-weight: 700;
+  font-size: var(--rugiet-text-button-size);
+  line-height: var(--rugiet-text-button-line);
+  letter-spacing: var(--rugiet-text-button-track);
+  text-transform: uppercase;
+}
+
+/* ── Button primitives ────────────────────────────────────────────── */
+/* All buttons share the sharp-corner container. Three types × three
+   color treatments are defined in the website design system; the most
+   common in IAMs are primary-orange and secondary-black. */
+.rugiet-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: var(--rugiet-radius-sharp);
+  font-family: var(--rugiet-font-text);
+  font-weight: 700;
+  font-size: var(--rugiet-text-button-size);
+  letter-spacing: var(--rugiet-text-button-track);
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity var(--rugiet-dur-base) var(--rugiet-ease-out),
+              background-color var(--rugiet-dur-base) var(--rugiet-ease-out),
+              color var(--rugiet-dur-base) var(--rugiet-ease-out);
+}
+.rugiet-btn:hover { opacity: 0.88; }
+.rugiet-btn:active { opacity: 0.78; }
+
+.rugiet-btn--primary-orange { background: var(--rugiet-orange); color: var(--rugiet-black);  border-color: var(--rugiet-orange); }
+.rugiet-btn--primary-black  { background: var(--rugiet-black);  color: var(--rugiet-white);  border-color: var(--rugiet-black);  }
+.rugiet-btn--primary-white  { background: var(--rugiet-white);  color: var(--rugiet-black);  border-color: var(--rugiet-white);  }
+.rugiet-btn--secondary-black { background: transparent; color: var(--rugiet-black); border-color: var(--rugiet-black); }
+.rugiet-btn--secondary-white { background: transparent; color: var(--rugiet-white); border-color: var(--rugiet-white); }
+
+/* ── Pills ────────────────────────────────────────────────────────── */
+.rugiet-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--rugiet-black);
+  border-radius: var(--rugiet-radius-pill);
+  font-family: var(--rugiet-font-text);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--rugiet-black);
+}
+.rugiet-pill--fill-orange { background: var(--rugiet-orange); border-color: var(--rugiet-orange); }
+.rugiet-pill--fill-black  { background: var(--rugiet-black);  border-color: var(--rugiet-black); color: var(--rugiet-white); }
+
+::selection { background: var(--rugiet-orange); color: var(--rugiet-black); }
