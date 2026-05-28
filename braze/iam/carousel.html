@@ -6,114 +6,124 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Carousel Modal</title>
+    <title>Rugiet — Carousel Modal</title>
     <!--
-        Instructions:
-        [ ] Copy this HTML into the Braze Dashboard IAM message composer
-        [ ] Upload and swap out all images (eg: https://via.placeholder.com/450 -> your new image URL)
-        [ ] Change text on each slide/page
-        [ ] Change the `href="#"` to `href="https://your-link" or `href="your://deeplink"`
-        [ ] Change button text
+        Rugiet × Braze IAM — Carousel Modal Template
+
+        Brand foundations live in /braze/iam/tokens.css and the Rugiet
+        Design System handoff. Voice: performance medicine for men.
+
+        Deployment checklist:
+        [ ] Upload the four Rugiet brand fonts (Review Regular, Review Bold,
+            Review Wide Black, Redward Mono Regular) to Braze:
+              Settings → Media Library → Font Assets
+            Then replace the four REPLACE_* tokens in the @font-face URLs
+            below with the appboy-images.com URLs Braze assigns.
+        [ ] Upload each slide image to Braze and swap the placeholder URLs
+            (the assets/products/* webp paths) with hosted CDN URLs.
+        [ ] Replace href="#" on each CTA with the destination URL or
+            deep link (e.g. rugiet://product/ready or https://rugiet.com/ready).
+        [ ] Edit slide eyebrows, headlines, body, and button labels for the
+            campaign. Compliance reminders: no guaranteed outcomes
+            ("designed to support", "may help"); no name-brand drug
+            comparisons; Ready onset is "as fast as 15 minutes for many men".
+        [ ] Copy the final HTML into the Braze Dashboard IAM message composer.
+
+        Structural compatibility:
+        - Wraps Siema (carousel) loaded from Braze's hosted code asset.
+        - Logs clicks + closes through window.appboyBridge.
+        - Responsive: 900×450 desktop, 330-wide stacked mobile, 660 wide
+          landscape-phone breakpoint (all from the Braze template baseline).
     -->
     <style>
-        /* fonts */
-        @font-face {
-            font-family: 'Sailec Bold';
-            src: url('https://appboy-images.com/appboy/communication/assets/font_assets/files/5f2d540126e78f1669f53229/original.otf?1596806145') format('truetype');
-        }
+        /* ── Rugiet brand fonts ───────────────────────────────────────
+           Each @font-face src has a Braze CDN entry (with a REPLACE_*
+           placeholder you swap after uploading to Media Library) and a
+           local-bundle fallback so the file previews on disk during
+           design review. When the Braze URL 404s, the browser falls
+           through to the local copy. */
 
         @font-face {
-            font-family: 'Sailec Normal';
-            src: url('https://appboy-images.com/appboy/communication/assets/font_assets/files/5f2d5401ff0a7415251998d6/original.otf?1596806145') format('truetype');
+            font-family: 'Review';
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+            src: local('Review Regular'),
+                 url('https://appboy-images.com/appboy/communication/assets/font_assets/files/REPLACE_REVIEW_REGULAR/original.woff2') format('woff2'),
+                 url('./fonts/Review-Regular-Web.woff2') format('woff2'),
+                 url('./fonts/Review-Regular.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Review';
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+            src: local('Review Bold'),
+                 url('https://appboy-images.com/appboy/communication/assets/font_assets/files/REPLACE_REVIEW_BOLD/original.otf') format('opentype'),
+                 url('./fonts/Review-Bold.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Review Wide';
+            font-weight: 900;
+            font-style: normal;
+            font-display: swap;
+            src: local('Review Wide Black'),
+                 url('https://appboy-images.com/appboy/communication/assets/font_assets/files/REPLACE_REVIEWWIDE_BLACK/original.otf') format('opentype'),
+                 url('./fonts/ReviewWide-Black.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Redward Mono';
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+            src: local('Redward Mono Regular'),
+                 url('https://appboy-images.com/appboy/communication/assets/font_assets/files/REPLACE_REDWARDMONO_REGULAR/original.woff2') format('woff2'),
+                 url('./fonts/Redward-Mono-Regular.woff2') format('woff2'),
+                 url('./fonts/Redward-Mono-Regular.otf') format('opentype');
         }
 
         :root {
-            --header-font-stack: 'Sailec Bold', helvetica, arial, sans-serif;
-            --body-font-stack: 'Sailec Normal', helvetica, arial, sans-serif;
+            --rugiet-black:   #000000;
+            --rugiet-white:   #FFFFFF;
+            --rugiet-orange:  #FFA202;
+            --rugiet-orange-deep: #FF5600;
+            --rugiet-cream:   #FFFCF9;
+            --rugiet-cream-deep: #F6F7EF;
+            --rugiet-gray-10: #E7E5E4;
+            --rugiet-gray-30: #A8A29F;
+            --rugiet-gray-40: #78716C;
+            --rugiet-gray-60: #292524;
+            --rugiet-gray-70: #1B1917;
+
+            --rugiet-font-display: 'Review Wide', 'Archivo Black', 'Arial Black', system-ui, sans-serif;
+            --rugiet-font-text:    'Review', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            --rugiet-font-mono:    'Redward Mono', 'JetBrains Mono', ui-monospace, monospace;
+
+            --rugiet-ease-out: cubic-bezier(0.2, 0, 0, 1);
         }
 
-        /* Box sizing rules */
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-        }
-
-        /* Remove default padding */
-        ul[class],
-        ol[class] {
-            padding: 0;
-        }
-
-        /* Remove default margin */
-        body,
-        h1,
-        h2,
-        h3,
-        h4,
-        p,
-        ul[class],
-        ol[class],
-        li,
-        figure,
-        figcaption,
-        blockquote,
-        dl,
-        dd {
-            margin: 0;
-        }
-
-        /* Set core body defaults */
+        /* ── Reset ───────────────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; }
+        ul[class], ol[class] { padding: 0; }
+        body, h1, h2, h3, h4, p, ul[class], ol[class], li, figure, figcaption, blockquote, dl, dd { margin: 0; }
         body {
             min-height: 100vh;
             scroll-behavior: smooth;
-            text-rendering: optimizeSpeed;
-            line-height: 1.5;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.4;
+            font-family: var(--rugiet-font-text);
+            color: var(--rugiet-black);
         }
+        ul[class], ol[class] { list-style: none; }
+        a:not([class]) { text-decoration-skip-ink: auto; }
+        img { max-width: 100%; display: block; }
+        article > * + * { margin-top: 1em; }
+        input, button, a, textarea, select { font: inherit; }
+        button, a { border: none; background-color: transparent; text-decoration: none; color: inherit; }
+        button:focus, a:focus { outline: none; }
 
-        /* Remove list styles on ul, ol elements with a class attribute */
-        ul[class],
-        ol[class] {
-            list-style: none;
-        }
-
-        /* A elements that don't have a class get default styles */
-        a:not([class]) {
-            text-decoration-skip-ink: auto;
-        }
-
-        /* Make images easier to work with */
-        img {
-            max-width: 100%;
-            display: block;
-        }
-
-        /* Natural flow and rhythm in articles by default */
-        article>*+* {
-            margin-top: 1em;
-        }
-
-        /* Inherit fonts for inputs and buttons */
-        input,
-        button,
-        a,
-        textarea,
-        select {
-            font: inherit;
-        }
-
-        button,
-        a {
-            border: none;
-            background-color: transparent;
-            text-decoration: none;
-        }
-
-        button:focus,
-        a {
-            outline: none;
-        }
-
+        /* ── Overlay ─────────────────────────────────────────────── */
         .overlay {
             display: flex;
             position: fixed;
@@ -121,12 +131,13 @@
             left: 0;
             height: 100vh;
             width: 100vw;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.78);
             z-index: 99999;
         }
 
+        /* ── Modal shell ─────────────────────────────────────────── */
         .modal {
-            height: 450px;
+            height: 480px;
             max-width: 900px;
             flex-basis: 900px;
             margin: auto;
@@ -134,129 +145,228 @@
 
         .modal__slide {
             display: flex;
-            height: 450px;
+            height: 480px;
             max-width: 900px;
             flex-basis: 900px;
             margin: auto;
+            background-color: var(--rugiet-cream);
         }
 
+        /* ── Image panel (left on desktop) ───────────────────────── */
         .modal__image {
-            height: 450px;
+            position: relative;
+            height: 480px;
             max-width: 450px;
             flex-basis: 450px;
-            background-size: cover;
+            background-color: var(--rugiet-black);
+            background-size: contain;
             background-repeat: no-repeat;
             background-position: center center;
+            overflow: hidden;
         }
+        /* Subtle Rugiet monogram embossed top-left of every image panel,
+           in case the swapped image leaves dead space. Inherits color
+           from the panel's foreground via currentColor. */
+        .modal__image::before {
+            content: "";
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 22px;
+            height: 32px;
+            background-color: var(--rugiet-orange);
+            -webkit-mask-image: url('./assets/logo/logomark.svg');
+            mask-image: url('./assets/logo/logomark.svg');
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            opacity: 0.9;
+            z-index: 2;
+        }
+        /* Product accent ribbons per slide — picked up by the per-slide
+           modifier (modal__image--ready etc) so each image panel reads
+           as that SKU's product color when an image is missing. */
+        .modal__image--ready    { background-color: #0F3D3D; }
+        .modal__image--recharge { background-color: #1B1917; }
+        .modal__image--cta      { background-color: #000000; }
 
+        /* ── Content panel (right on desktop) ────────────────────── */
         .modal__content {
             display: flex;
             flex-direction: column;
             position: relative;
-            height: 450px;
+            height: 480px;
             max-width: 450px;
             flex-basis: 450px;
-            padding: 60px 40px 40px;
-            background-color: rgb(255, 255, 255);
+            padding: 56px 40px 40px;
+            background-color: var(--rugiet-cream);
         }
 
+        /* ── Close X (Rugiet square sharp variant) ───────────────── */
         .modal__cross {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            height: 34px;
-            width: 34px;
+            top: 16px;
+            right: 16px;
+            height: 32px;
+            width: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--rugiet-black);
+            cursor: pointer;
+            transition: opacity 240ms var(--rugiet-ease-out);
+        }
+        .modal__cross:hover { opacity: 0.62; }
+        .modal__cross svg { width: 16px; height: 16px; }
+
+        /* ── Editorial type ──────────────────────────────────────── */
+        .modal__eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--rugiet-font-mono);
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 1.3;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--rugiet-orange-deep);
+            margin-bottom: 16px;
+        }
+        .modal__eyebrow::before {
+            content: "";
+            width: 24px;
+            height: 1px;
+            background-color: var(--rugiet-orange-deep);
         }
 
         .modal__title {
-            width: 300px;
-            margin-bottom: 10px;
-            font-family: var(--header-font-stack);
+            font-family: var(--rugiet-font-display);
+            font-weight: 900;
             font-size: 36px;
-            line-height: 1.2;
-            color: #101B24;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            color: var(--rugiet-black);
+            margin-bottom: 16px;
+            text-wrap: balance;
         }
 
         .modal__sub-title {
-            margin-bottom: 10px;
-            font-family: var(--header-font-stack);
+            font-family: var(--rugiet-font-text);
+            font-weight: 700;
             font-size: 16px;
-            color: #76848C;
+            line-height: 1.25;
+            letter-spacing: -0.005em;
+            color: var(--rugiet-gray-60);
+            margin-bottom: 12px;
         }
 
         .modal__text {
-            font-family: var(--body-font-stack);
+            font-family: var(--rugiet-font-text);
+            font-weight: 400;
             font-size: 14px;
-            color: #101B24;
-            line-height: 1.5;
+            line-height: 1.45;
+            letter-spacing: 0.005em;
+            color: var(--rugiet-gray-60);
         }
 
+        /* ── Footer / buttons ────────────────────────────────────── */
         .modal__button-wrap {
             margin-top: auto;
-            margin-left: auto;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: center;
         }
 
         .modal__btn {
-            font-family: var(--header-font-stack);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 44px;
+            padding: 10px 18px;
+            border-radius: 0; /* Rugiet rule: buttons are sharp, only pills are rounded */
+            border: 1px solid transparent;
+            font-family: var(--rugiet-font-text);
             font-weight: 700;
+            font-size: 13px;
+            line-height: 1;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
             color: inherit;
-            display: inline-block;
+            cursor: pointer;
+            transition: opacity 240ms var(--rugiet-ease-out),
+                        background-color 240ms var(--rugiet-ease-out),
+                        color 240ms var(--rugiet-ease-out);
         }
-
-        .modal__btn--main {
-            margin-left: 10px;
-            padding: 8px 16px;
-            background-color: #0099AE;
-            color: rgb(255, 255, 255);
-            font-size: 14px;
-        }
+        .modal__btn:hover { opacity: 0.88; }
+        .modal__btn:active { opacity: 0.78; }
 
         .modal__btn--secondary {
-            padding: 8px 16px;
-            border: 1px solid #A8B3B8;
-            font-size: 14px;
+            background: transparent;
+            color: var(--rugiet-black);
+            border: 1px solid var(--rugiet-black);
+        }
+        .modal__btn--main {
+            background: var(--rugiet-orange);
+            color: var(--rugiet-black);
+            border: 1px solid var(--rugiet-orange);
         }
 
+        /* ── Carousel chrome (toggle dots + chevrons) ────────────── */
         .modal__carousel-toggle {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px;
-            background-color: rgb(255, 255, 255);
-            cursor: pointer;
+            gap: 4px;
+            padding: 12px 0;
+            background-color: var(--rugiet-cream);
+            cursor: default;
         }
 
-        .modal__carousel-toggle button,
-        .modal__carousel-toggle a {
-            height: 24px;
+        .modal__carousel-toggle button {
+            height: 28px;
+            width: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
+            color: var(--rugiet-black);
+            transition: opacity 240ms var(--rugiet-ease-out), color 240ms var(--rugiet-ease-out);
         }
+        .modal__carousel-toggle button:hover { color: var(--rugiet-orange-deep); }
 
+        /* Pill dot — pills are the one place rounded radii live in the
+           Rugiet system. Inactive: hairline ring; active: solid black. */
         .modal__carousel-navigation {
             display: inline-block;
-            height: 12px;
-            width: 12px;
-            margin-right: 5px;
-            margin-left: 5px;
+            height: 8px;
+            width: 8px;
+            margin: 0 4px;
             border-radius: 50%;
-            border: 1px solid #8F9BA2;
+            border: 1px solid var(--rugiet-black);
+            background-color: transparent;
+            cursor: pointer;
+            transition: background-color 240ms var(--rugiet-ease-out),
+                        border-color 240ms var(--rugiet-ease-out);
         }
 
         .modal__carousel-navigation.is-active {
-            background-color: #8F9BA2;
+            background-color: var(--rugiet-black);
+            border-color: var(--rugiet-black);
         }
 
-        .modal__cross-mobile {
-            display: none !important;
-        }
+        .modal__cross-mobile { display: none !important; }
 
-        /*Phones*/
+        /* ── Phones ──────────────────────────────────────────────── */
         @media (max-width: 900px) {
             .modal {
                 height: auto;
                 max-width: 330px;
                 flex-basis: 330px;
-                margin: auto;
             }
 
             .modal__slide {
@@ -267,60 +377,68 @@
             }
 
             .modal__cross-mobile {
+                position: absolute;
+                top: 14px;
+                right: 14px;
+                z-index: 3;
                 border-radius: 50%;
-                background: white;
+                background: var(--rugiet-cream);
+                color: var(--rugiet-black);
                 display: flex !important;
                 justify-content: center;
-                padding: 1px;
+                align-items: center;
+                height: 30px;
+                width: 30px;
+                padding: 0;
             }
-
-            .modal__cross-web {
-                display: none !important;
-            }
+            .modal__cross-mobile svg { width: 14px; height: 14px; }
+            .modal__cross-web { display: none !important; }
 
             .modal__image {
                 height: 330px;
                 flex-basis: 330px;
-            }
-
-            .modal__title,
-            .modal__sub-title {
-                margin-bottom: 8px;
+                max-width: 330px;
             }
 
             .modal__title {
-                font-size: 23px;
+                font-size: 28px;
+                margin-bottom: 12px;
             }
+            .modal__sub-title { margin-bottom: 10px; }
+            .modal__eyebrow { margin-bottom: 12px; }
 
             .modal__content {
-                display: flex;
-                flex-direction: column;
                 position: relative;
                 height: auto;
                 max-width: 330px;
                 flex-basis: auto;
-                padding: 24px 16px 24px 16px;
-                background-color: rgb(255, 255, 255);
+                padding: 24px 20px 24px;
+                background-color: var(--rugiet-cream);
             }
 
             .modal__button-wrap {
                 display: flex;
-                margin-top: 24px;
-                margin-left: 0px;
+                margin-top: 20px;
+                margin-left: 0;
                 justify-content: space-between;
             }
 
             .modal__btn {
-                width: 140px;
-                padding: 8px 8px;
+                flex: 1 1 auto;
+                min-width: 140px;
+                height: 42px;
+                padding: 10px 12px;
             }
 
             .modal__carousel-toggle {
                 background-color: transparent;
             }
-
+            .modal__carousel-toggle button { color: var(--rugiet-white); }
+            .modal__carousel-toggle button:hover { color: var(--rugiet-orange); }
+            .modal__carousel-navigation { border-color: var(--rugiet-white); }
             .modal__carousel-navigation.is-active {
-                background-color: white;
+                background-color: var(--rugiet-white);
+                border-color: var(--rugiet-white);
             }
         }
 
@@ -338,11 +456,10 @@
                 flex-basis: 900px;
                 margin: auto;
             }
-
-            .modal__cross {
-                right: none;
-                left: 14px;
-            }
+            .modal__image { height: 330px; }
+            .modal__content { height: 330px; padding: 32px 24px 24px; }
+            .modal__title { font-size: 26px; }
+            .modal__cross { right: none; left: 14px; }
         }
 
         @media (orientation: landscape) and (max-width: 569px) {
@@ -350,16 +467,11 @@
                 max-width: 568px;
                 flex-basis: 568px;
             }
-
-            .overlay {
-                overflow-y: scroll;
-            }
+            .overlay { overflow-y: scroll; }
         }
 
         @media (max-width: 320px) {
-            .overlay {
-                overflow-y: scroll;
-            }
+            .overlay { overflow-y: scroll; }
         }
     </style>
 </head>
@@ -368,133 +480,113 @@
     <div class="overlay">
         <div class="modal">
             <div class="siema">
-                <!-- first page  -->
+
+                <!-- ── Slide 1 · Brand intro ─────────────────────── -->
                 <div class="modal__slide">
                     <button onclick="appboyBridge.logClick();appboyBridge.closeMessage()"
-                        class="modal__cross modal__cross-mobile">
-                        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M14.4175 16.8419L8.51467 10.9391C7.8452 10.2696 7.8452 9.18422 8.51467 8.51475C9.18414 7.84528 10.2696 7.84528 10.939 8.51475L16.8418 14.4176L22.7446 8.51475C23.4141 7.84528 24.4995 7.84528 25.169 8.51475C25.8385 9.18422 25.8385 10.2696 25.169 10.9391L19.2662 16.8419L25.169 22.7447C25.8385 23.4142 25.8385 24.4996 25.169 25.1691C24.4995 25.8386 23.4141 25.8386 22.7446 25.1691L16.8418 19.2663L10.939 25.1691C10.2696 25.8386 9.18414 25.8386 8.51467 25.1691C7.8452 24.4996 7.8452 23.4142 8.51467 22.7447L14.4175 16.8419Z"
-                                fill="#A8B3B8" />
+                        class="modal__cross modal__cross-mobile" aria-label="Close">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" />
                         </svg>
                     </button>
-                    <div class="modal__image" style="background-image: url('https://via.placeholder.com/450')"></div>
+                    <div class="modal__image modal__image--ready" style="background-image: url('./assets/products/ready-laydown.webp')"></div>
                     <div class="modal__content">
                         <button onclick="appboyBridge.logClick();appboyBridge.closeMessage()"
-                            class="modal__cross modal__cross-web">
-                            <svg width="34" height="34" viewBox="0 0 34 34" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M14.4175 16.8419L8.51467 10.9391C7.8452 10.2696 7.8452 9.18422 8.51467 8.51475C9.18414 7.84528 10.2696 7.84528 10.939 8.51475L16.8418 14.4176L22.7446 8.51475C23.4141 7.84528 24.4995 7.84528 25.169 8.51475C25.8385 9.18422 25.8385 10.2696 25.169 10.9391L19.2662 16.8419L25.169 22.7447C25.8385 23.4142 25.8385 24.4996 25.169 25.1691C24.4995 25.8386 23.4141 25.8386 22.7446 25.1691L16.8418 19.2663L10.939 25.1691C10.2696 25.8386 9.18414 25.8386 8.51467 25.1691C7.8452 24.4996 7.8452 23.4142 8.51467 22.7447L14.4175 16.8419Z"
-                                    fill="#A8B3B8" />
+                            class="modal__cross modal__cross-web" aria-label="Close">
+                            <svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" />
                             </svg>
                         </button>
-                        <h1 class="modal__title">Welcome to Braze Templates!</h1>
-                        <h2 class="modal__sub-title">Be sure to change the text here</h2>
-                        <p class="modal__text">And, remember to swap out the placeholder images. If you want, upload
-                            your own font and
-                            change them at the top of this file.</p>
+                        <span class="modal__eyebrow">Performance Medicine</span>
+                        <h1 class="modal__title">Built for your pursuit.</h1>
+                        <h2 class="modal__sub-title">Real doctors. Real science. Real results.</h2>
+                        <p class="modal__text">Treatments designed for men who refuse to settle — across sexual health, hair, sleep and weight. Personalised by physicians, fulfilled by licensed pharmacies.</p>
                         <div class="modal__button-wrap">
                             <a class="modal__btn modal__btn--secondary" href="#"
-                                onclick="appboyBridge.logClick('1');">Secondary Action</a>
+                                onclick="appboyBridge.logClick('1');">Explore</a>
                             <a class="modal__btn modal__btn--main" href="#"
-                                onclick="appboyBridge.logClick('0');">Primary Action</a>
+                                onclick="appboyBridge.logClick('0');">Start Consult</a>
                         </div>
                     </div>
                 </div>
-                <!-- second page  -->
+
+                <!-- ── Slide 2 · Product feature (Ready) ─────────── -->
                 <div class="modal__slide">
                     <button onclick="appboyBridge.logClick();appboyBridge.closeMessage()"
-                        class="modal__cross modal__cross-mobile">
-                        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M14.4175 16.8419L8.51467 10.9391C7.8452 10.2696 7.8452 9.18422 8.51467 8.51475C9.18414 7.84528 10.2696 7.84528 10.939 8.51475L16.8418 14.4176L22.7446 8.51475C23.4141 7.84528 24.4995 7.84528 25.169 8.51475C25.8385 9.18422 25.8385 10.2696 25.169 10.9391L19.2662 16.8419L25.169 22.7447C25.8385 23.4142 25.8385 24.4996 25.169 25.1691C24.4995 25.8386 23.4141 25.8386 22.7446 25.1691L16.8418 19.2663L10.939 25.1691C10.2696 25.8386 9.18414 25.8386 8.51467 25.1691C7.8452 24.4996 7.8452 23.4142 8.51467 22.7447L14.4175 16.8419Z"
-                                fill="#A8B3B8" />
+                        class="modal__cross modal__cross-mobile" aria-label="Close">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" />
                         </svg>
                     </button>
-                    <div class="modal__image" style="background-image: url('https://via.placeholder.com/450')"></div>
+                    <div class="modal__image modal__image--recharge" style="background-image: url('./assets/products/recharge-laydown.webp')"></div>
                     <div class="modal__content">
                         <button onclick="appboyBridge.logClick();appboyBridge.closeMessage()"
-                            class="modal__cross modal__cross-web">
-                            <svg width="34" height="34" viewBox="0 0 34 34" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M14.4175 16.8419L8.51467 10.9391C7.8452 10.2696 7.8452 9.18422 8.51467 8.51475C9.18414 7.84528 10.2696 7.84528 10.939 8.51475L16.8418 14.4176L22.7446 8.51475C23.4141 7.84528 24.4995 7.84528 25.169 8.51475C25.8385 9.18422 25.8385 10.2696 25.169 10.9391L19.2662 16.8419L25.169 22.7447C25.8385 23.4142 25.8385 24.4996 25.169 25.1691C24.4995 25.8386 23.4141 25.8386 22.7446 25.1691L16.8418 19.2663L10.939 25.1691C10.2696 25.8386 9.18414 25.8386 8.51467 25.1691C7.8452 24.4996 7.8452 23.4142 8.51467 22.7447L14.4175 16.8419Z"
-                                    fill="#A8B3B8" />
+                            class="modal__cross modal__cross-web" aria-label="Close">
+                            <svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" />
                             </svg>
                         </button>
-                        <h1 class="modal__title">Welcome to Braze Templates!</h1>
-                        <h2 class="modal__sub-title">Be sure to change the text here</h2>
-                        <p class="modal__text">And, remember to swap out the placeholder images. If you want, upload
-                            your own font and
-                            change them at the top of this file.</p>
+                        <span class="modal__eyebrow">Meet Ready</span>
+                        <h1 class="modal__title">Brain + body.</h1>
+                        <h2 class="modal__sub-title">A three-in-one prescription, designed differently.</h2>
+                        <p class="modal__text">Ready works with the brain's role in arousal and the body's blood-flow response — as fast as 15 minutes for many men, with a 36-hour window of confidence.</p>
                         <div class="modal__button-wrap">
                             <a class="modal__btn modal__btn--secondary" href="#"
-                                onclick="appboyBridge.logClick('1');">Secondary
-                                Action</a>
+                                onclick="appboyBridge.logClick('1');">How It Works</a>
                             <a class="modal__btn modal__btn--main" href="#"
-                                onclick="appboyBridge.logClick('0');">Primary Action</a>
+                                onclick="appboyBridge.logClick('0');">Try Ready</a>
                         </div>
                     </div>
                 </div>
-                <!-- third page  -->
+
+                <!-- ── Slide 3 · Hard close (consult CTA) ────────── -->
                 <div class="modal__slide">
                     <button onclick="appboyBridge.logClick();appboyBridge.closeMessage()"
-                        class="modal__cross modal__cross-mobile">
-                        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M14.4175 16.8419L8.51467 10.9391C7.8452 10.2696 7.8452 9.18422 8.51467 8.51475C9.18414 7.84528 10.2696 7.84528 10.939 8.51475L16.8418 14.4176L22.7446 8.51475C23.4141 7.84528 24.4995 7.84528 25.169 8.51475C25.8385 9.18422 25.8385 10.2696 25.169 10.9391L19.2662 16.8419L25.169 22.7447C25.8385 23.4142 25.8385 24.4996 25.169 25.1691C24.4995 25.8386 23.4141 25.8386 22.7446 25.1691L16.8418 19.2663L10.939 25.1691C10.2696 25.8386 9.18414 25.8386 8.51467 25.1691C7.8452 24.4996 7.8452 23.4142 8.51467 22.7447L14.4175 16.8419Z"
-                                fill="#A8B3B8" />
+                        class="modal__cross modal__cross-mobile" aria-label="Close">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" />
                         </svg>
                     </button>
-                    <div class="modal__image" style="background-image: url('https://via.placeholder.com/450')"></div>
+                    <div class="modal__image modal__image--cta" style="background-image: url('./assets/products/grower-laydown.webp')"></div>
                     <div class="modal__content">
                         <button onclick="appboyBridge.logClick();appboyBridge.closeMessage()"
-                            class="modal__cross modal__cross-web">
-                            <svg width="34" height="34" viewBox="0 0 34 34" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M14.4175 16.8419L8.51467 10.9391C7.8452 10.2696 7.8452 9.18422 8.51467 8.51475C9.18414 7.84528 10.2696 7.84528 10.939 8.51475L16.8418 14.4176L22.7446 8.51475C23.4141 7.84528 24.4995 7.84528 25.169 8.51475C25.8385 9.18422 25.8385 10.2696 25.169 10.9391L19.2662 16.8419L25.169 22.7447C25.8385 23.4142 25.8385 24.4996 25.169 25.1691C24.4995 25.8386 23.4141 25.8386 22.7446 25.1691L16.8418 19.2663L10.939 25.1691C10.2696 25.8386 9.18414 25.8386 8.51467 25.1691C7.8452 24.4996 7.8452 23.4142 8.51467 22.7447L14.4175 16.8419Z"
-                                    fill="#A8B3B8" />
+                            class="modal__cross modal__cross-web" aria-label="Close">
+                            <svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" />
                             </svg>
                         </button>
-                        <h1 class="modal__title">Welcome to Braze Templates!</h1>
-                        <h2 class="modal__sub-title">Be sure to change the text here</h2>
-                        <p class="modal__text">And, remember to swap out the placeholder images. If you want, upload
-                            your own font and
-                            change them at the top of this file.</p>
+                        <span class="modal__eyebrow">Doctor-Guided Protocol</span>
+                        <h1 class="modal__title">Designed for you.</h1>
+                        <h2 class="modal__sub-title">Not the average man — you.</h2>
+                        <p class="modal__text">A licensed physician reviews your goals and designs a prescription around them. Take the five-minute consult and see what your protocol could look like.</p>
                         <div class="modal__button-wrap">
                             <a class="modal__btn modal__btn--secondary" href="#"
-                                onclick="appboyBridge.logClick('1');">Secondary
-                                Action</a>
+                                onclick="appboyBridge.logClick('1');">Not Now</a>
                             <a class="modal__btn modal__btn--main" href="#"
-                                onclick="appboyBridge.logClick('0');">Primary Action</a>
+                                onclick="appboyBridge.logClick('0');">Begin Consult</a>
                         </div>
                     </div>
                 </div>
+
             </div>
             <div class="modal__carousel-toggle">
-                <button class="prev" type="button">
-                    <svg width="8" height="11" viewBox="0 0 8 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M0.894332 5.86154L5.28285 10.1129C5.58294 10.4067 6.07343 10.4067 6.37673 10.1129L7.10602 9.4064C7.40932 9.11569 7.40932 8.64054 7.10602 8.34669L3.99532 5.33327L7.10602 2.31982C7.40932 2.02911 7.40932 1.55395 7.10602 1.2601L6.37673 0.553642C6.07664 0.259789 5.58615 0.259789 5.28285 0.553642L0.894332 4.80497C0.590995 5.09882 0.590995 5.57394 0.894332 5.86154Z"
-                            fill="#8F9BA2" />
+                <button class="prev" type="button" aria-label="Previous slide">
+                    <svg width="9" height="13" viewBox="0 0 9 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 1L2 6.5L8 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" />
                     </svg>
                 </button>
-                <span class="modal__carousel-navigation js-slide-toggle is-active" id="js-slide-one-toggle"></span>
-                <span class="modal__carousel-navigation js-slide-toggle" id="js-slide-two-toggle"></span>
-                <span class="modal__carousel-navigation js-slide-toggle" id="js-slide-three-toggle"></span>
-                <button class="next" type="button">
-                    <svg width="8" height="11" viewBox="0 0 8 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M7.10591 4.80497L2.7174 0.553642C2.41731 0.259789 1.92682 0.259789 1.62351 0.553642L0.894227 1.2601C0.590922 1.55081 0.590922 2.02596 0.894227 2.31982L4.00492 5.33324L0.894227 8.34669C0.590922 8.6374 0.590922 9.11255 0.894227 9.4064L1.62351 10.1129C1.9236 10.4067 2.41409 10.4067 2.7174 10.1129L7.10591 5.86154C7.40925 5.56768 7.40925 5.09256 7.10591 4.80497Z"
-                            fill="#8F9BA2" />
+                <span class="modal__carousel-navigation js-slide-toggle is-active" id="js-slide-one-toggle" role="button" tabindex="0" aria-label="Go to slide 1"></span>
+                <span class="modal__carousel-navigation js-slide-toggle" id="js-slide-two-toggle" role="button" tabindex="0" aria-label="Go to slide 2"></span>
+                <span class="modal__carousel-navigation js-slide-toggle" id="js-slide-three-toggle" role="button" tabindex="0" aria-label="Go to slide 3"></span>
+                <button class="next" type="button" aria-label="Next slide">
+                    <svg width="9" height="13" viewBox="0 0 9 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L7 6.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" />
                     </svg>
                 </button>
             </div>
         </div>
     </div>
-    <!-- siema.min.js -->
+    <!-- siema.min.js (Braze-hosted) -->
     <script
         src="https://appboy-images.com/appboy/communication/assets/code_assets/files/5f2d589683566823fc373ec4/original.js?1596807318"></script>
     <script>
@@ -506,6 +598,7 @@
         const slideToggles = document.querySelectorAll('.js-slide-toggle');
         const mySiema = new Siema({
             duration: 350,
+            easing: 'cubic-bezier(0.2, 0, 0, 1)',
             loop: true,
             onChange: () => updateCurrentSlideState(),
         });
