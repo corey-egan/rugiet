@@ -1,15 +1,21 @@
 # Rugiet — Braze In-App Message templates
 
-Templates for in-app messages delivered via Braze, styled to the Rugiet
-brand. Each template is a single self-contained HTML file because Braze
-inlines the message contents into the host app's webview; external
-stylesheet links are not reliable.
+Reusable template scaffolding for in-app messages delivered via Braze,
+styled to the Rugiet brand. Each template is a single self-contained
+HTML file because Braze inlines the message contents into the host app's
+webview; external stylesheet links are not reliable.
+
+**These are generic templates, not campaign outputs.** Campaign-specific
+IAMs (with real copy, real product names, real offer lines) belong in
+`outputs/creative/` — see the design-system skill's
+`references/in-app-patterns.md` for the full workflow.
 
 ## Files
 
 | Path | Role |
 |---|---|
-| `carousel.html` | Three-slide carousel modal (preserves Braze's Siema + `appboyBridge` integration). The first template in this folder, rebranded against the Rugiet design system. |
+| `carousel.html` | Multi-slide carousel modal (Siema + `appboyBridge`). Suited for onboarding, education, and product lineup showcases. |
+| `single-panel.html` | Stacked hero-image-over-content modal (`brazeBridge`). Suited for product announcements, upsells, and single-message promotions. Derived from Figma Website file, node `6025:1587`. |
 | `tokens.css` | Brand tokens (colors, type roles, button + pill primitives). **Not loaded by templates** — it is a copy-from-here reference for designers building new IAMs. |
 | `fonts/` | Rugiet brand webfonts (Pangram Pangram: Review, Review Wide Black, Redward Mono). Committed for local preview; production deployment needs each `.otf` uploaded to Braze's Media Library so every template can reference the Braze-hosted URL. |
 | `assets/logo/logomark.svg` | The Rugiet logomark (single SVG, paints with `currentColor`). |
@@ -41,43 +47,42 @@ pieces an IAM typically uses:
 `tokens.css` is the single-page condensed version of all of the above
 that designers can scan or paste into a new template.
 
-## Deploying `carousel.html` to Braze
+## Deploying a template to Braze
 
-1. **Upload the brand fonts to Braze** (Settings → Media Library →
-   Font Assets). Upload these four files from `./fonts/`:
-   - `Review-Regular-Web.woff2` (or `Review-Regular.otf`)
-   - `Review-Bold.otf`
-   - `ReviewWide-Black.otf`
-   - `Redward-Mono-Regular.woff2` (or `Redward-Mono-Regular.otf`)
-2. **Replace the four `REPLACE_*` placeholders** in `carousel.html`'s
-   `@font-face` blocks with the `appboy-images.com/.../original.*`
-   URLs Braze assigns. The local `./fonts/…` fallbacks can stay (Braze
-   won't serve them; they are only used during local preview), or you
-   can strip them to keep the template lean.
-3. **Upload each slide image** to Braze and swap the
-   `./assets/products/*.webp` paths with the hosted CDN URLs.
+The deployment flow is the same for all templates:
+
+1. **Fonts are done.** All seven font faces (Review Regular, Regular
+   Italic, Bold, Wide Black; Redward Mono Regular, Light) are uploaded
+   to Braze with production CDN URLs hardcoded in every template. No
+   font placeholders remain.
+3. **Upload campaign images** to Braze and swap the `REPLACE_*` image
+   placeholders with the hosted CDN URLs.
 4. **Replace every `href="#"`** on the CTAs with the destination URL
    or deep link (`https://rugiet.com/…` or `rugiet://…`).
-5. **Edit slide copy** — eyebrows, headlines, body, and button labels
+5. **Edit all copy** — headlines, body, button labels, offer lines —
    for the actual campaign. Keep voice and compliance language tight.
 6. **Paste the final HTML** into the Braze Dashboard IAM message
-   composer.
+   composer → Custom Code.
 
-The template logs clicks through `appboyBridge.logClick('0' | '1')`
-(primary = `'0'`, secondary = `'1'`) and closes through
-`appboyBridge.closeMessage()`, matching the Braze convention for
-multi-CTA carousel modals.
+Click tracking uses `brazeBridge.logClick('0')` (primary) and
+`brazeBridge.logClick('1')` (secondary). Closing uses
+`brazeBridge.closeMessage()`. The carousel template uses the legacy
+`appboyBridge` alias — both work in current Braze SDKs.
 
 ## Adding a new IAM template
 
 1. Start a new self-contained HTML file in `braze/iam/`.
-2. Copy the `<style>` block from `carousel.html` or paste the relevant
-   sections from `tokens.css` — `:root` tokens, `@font-face`
-   declarations, and the button / pill primitives are usually enough
-   to bootstrap a new layout.
-3. Reuse the four `appboy-images.com/REPLACE_*` font URL pattern so
-   the deployment swap is consistent across templates.
-4. Update this README's table with the new file.
+2. Copy the `<style>` block from an existing template or paste the
+   relevant sections from `tokens.css` — `:root` tokens, `@font-face`
+   declarations, and the button primitives are usually enough to
+   bootstrap a new layout.
+3. Use generic placeholder copy. No product names, no campaign-specific
+   content.
+4. Reuse the `REPLACE_*` font URL pattern so the deployment swap is
+   consistent across templates.
+5. Update this README's table with the new file.
+6. Add a section to `.claude/skills/rugiet-design-system/references/in-app-patterns.md`
+   describing the template and when to use it.
 
 ## Caveats
 

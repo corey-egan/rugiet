@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Rugiet — Go Long Upgrade</title>
+    <!--
+        Rugiet × Braze IAM — Go Long Upgrade Modal
+
+        Single-panel upsell modal for existing Go Long subscribers.
+        Source design: Figma Website file, node 6025:1587.
+        Brand foundations: /braze/iam/tokens.css and the Rugiet Design System.
+
+        Deployment checklist:
+        [x] All brand fonts (Review Regular, Regular Italic, Bold,
+            Wide Black; Redward Mono Regular, Light) are uploaded to
+            Braze with production CDN URLs hardcoded below.
+        [ ] Upload the hero lifestyle image and Go Long product shot to
+            Braze Media Library. Replace REPLACE_HERO_IMAGE and
+            REPLACE_PRODUCT_IMAGE with the CDN URLs.
+        [ ] Replace href="#" on each CTA with the destination URL or
+            deep link (e.g. rugiet://upgrade/golong).
+        [ ] Edit the headline, body, savings percentage, and button labels
+            for the campaign. Liquid personalization (e.g. {{${first_name}}})
+            is supported.
+        [ ] Paste the final HTML into the Braze Dashboard → In-App Message
+            composer → Custom Code.
+
+        Interaction model:
+        - Primary CTA ("Upgrade Me") → brazeBridge.logClick('0')
+        - Secondary CTA ("Skip For Now") → brazeBridge.logClick('1') + close
+        - Close X → brazeBridge.closeMessage()
+    -->
+    <style>
+        @font-face {
+            font-family: 'Review';
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+            src: local('Review Regular'),
+                 url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a116c74d00887c750f/original.otf?1777428385') format('opentype'),
+                 url('./fonts/Review-Regular.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Review';
+            font-weight: 400;
+            font-style: italic;
+            font-display: swap;
+            src: local('Review Regular Italic'),
+                 url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a0df9d180088c42cba/original.otf?1777428383') format('opentype'),
+                 url('./fonts/Review-RegularItalic.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Review';
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+            src: local('Review Bold'),
+                 url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a028ccd700880080e7/original.otf?1777428384') format('opentype'),
+                 url('./fonts/Review-Bold.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Review Wide';
+            font-weight: 900;
+            font-style: normal;
+            font-display: swap;
+            src: local('Review Wide Black'),
+                 url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a024a17e008a3616f1/original.otf?1777428383') format('opentype'),
+                 url('./fonts/ReviewWide-Black.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Redward Mono';
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+            src: local('Redward Mono Regular'),
+                 url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a0c08e29008ad72571/original.otf?1777428383') format('opentype'),
+                 url('./fonts/Redward-Mono-Regular.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Redward Mono';
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+            src: local('Redward Mono Light'),
+                 url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a093c3c90088050a48/original.otf?1777428383') format('opentype'),
+                 url('./fonts/Redward-Mono-Light.otf') format('opentype');
+        }
+
+        :root {
+            --rugiet-black:   #000000;
+            --rugiet-white:   #FFFFFF;
+            --rugiet-orange:  #FFA202;
+            --rugiet-orange-deep: #FF5600;
+            --rugiet-cream:   #FFFCF9;
+            --rugiet-gray-10: #E7E5E4;
+            --rugiet-gray-30: #A8A29F;
+            --rugiet-gray-40: #78716C;
+            --rugiet-gray-60: #292524;
+            --rugiet-gray-70: #1B1917;
+
+            --rugiet-font-display: 'Review Wide', 'Archivo Black', 'Arial Black', system-ui, sans-serif;
+            --rugiet-font-text:    'Review', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            --rugiet-font-mono:    'Redward Mono', 'JetBrains Mono', ui-monospace, monospace;
+
+            --rugiet-ease-out: cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+        ul[class], ol[class] { padding: 0; }
+        body, h1, h2, h3, h4, p, ul[class], ol[class], li, figure, figcaption, blockquote, dl, dd { margin: 0; }
+        body {
+            min-height: 100vh;
+            scroll-behavior: smooth;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            line-height: 1.4;
+            font-family: var(--rugiet-font-text);
+            color: var(--rugiet-black);
+        }
+        img { max-width: 100%; display: block; }
+        input, button, a, textarea, select { font: inherit; }
+        button, a { border: none; background-color: transparent; text-decoration: none; color: inherit; }
+        button:focus, a:focus { outline: none; }
+
+        /* ── Overlay ─────────────────────────────────────────────── */
+        .overlay {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            background-color: rgba(0, 0, 0, 0.78);
+            z-index: 99999;
+        }
+
+        /* ── Modal shell ─────────────────────────────────────────── */
+        .modal {
+            max-width: 495px;
+            width: 100%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        /* ── Hero image panel ────────────────────────────────────── */
+        .modal__hero {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 76.8%;  /* 380 / 495 aspect ratio */
+            background-color: var(--rugiet-black);
+            overflow: hidden;
+        }
+
+        .modal__hero-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        .modal__hero-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(10deg, rgba(0,0,0,1) 0.7%, rgba(0,0,0,0) 67.3%);
+            pointer-events: none;
+        }
+
+        .modal__hero-text {
+            position: absolute;
+            bottom: 24px;
+            left: 26px;
+            right: 140px;
+            z-index: 2;
+            text-align: left;
+        }
+
+        .modal__headline {
+            font-family: var(--rugiet-font-display);
+            font-weight: 900;
+            font-size: 45px;
+            line-height: 0.92;
+            letter-spacing: -0.03em;
+            text-transform: uppercase;
+            color: var(--rugiet-white);
+            margin: 0;
+            text-align: left;
+        }
+
+        .modal__product-img {
+            position: absolute;
+            bottom: 22px;
+            right: 16px;
+            width: 114px;
+            height: 114px;
+            border-radius: 50%;
+            object-fit: cover;
+            z-index: 2;
+        }
+
+        /* ── Close X ─────────────────────────────────────────────── */
+        .modal__close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            height: 32px;
+            width: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--rugiet-white);
+            cursor: pointer;
+            transition: opacity 240ms var(--rugiet-ease-out);
+            z-index: 3;
+            padding: 0;
+            background: none;
+            border: none;
+        }
+        .modal__close:hover { opacity: 0.62; }
+        .modal__close svg { width: 20px; height: 20px; }
+
+        /* ── Content panel ───────────────────────────────────────── */
+        .modal__content {
+            display: flex;
+            flex-direction: column;
+            padding: 20px 27px 30px;
+            background-color: var(--rugiet-white);
+            text-align: left;
+        }
+
+        .modal__body {
+            font-family: var(--rugiet-font-text);
+            font-weight: 400;
+            font-size: 19px;
+            line-height: 1.24;
+            letter-spacing: -0.01em;
+            color: var(--rugiet-gray-70);
+            margin: 0 0 24px;
+            text-align: left;
+        }
+
+        /* ── Upgrade banner ──────────────────────────────────────── */
+        .modal__upgrade {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            margin-bottom: 24px;
+        }
+
+        .modal__divider {
+            width: 100%;
+            height: 1px;
+            background-color: var(--rugiet-gray-10);
+            border: none;
+            margin: 0;
+        }
+
+        .modal__upgrade-text {
+            font-family: var(--rugiet-font-text);
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 1.14;
+            letter-spacing: -0.01em;
+            color: var(--rugiet-black);
+            margin: 0;
+            text-align: left;
+        }
+
+        /* ── CTAs ────────────────────────────────────────────────── */
+        .modal__cta-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .modal__btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 39px;
+            padding: 0 12px;
+            border-radius: 0;
+            border: none;
+            font-family: var(--rugiet-font-text);
+            font-weight: 700;
+            font-size: 12.5px;
+            line-height: 1.35;
+            letter-spacing: 0.01em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 240ms var(--rugiet-ease-out);
+        }
+        .modal__btn:hover { opacity: 0.88; }
+        .modal__btn:active { opacity: 0.78; }
+
+        .modal__btn--primary {
+            background: var(--rugiet-orange);
+            color: var(--rugiet-black);
+            min-width: 123px;
+        }
+
+        .modal__btn--ghost {
+            background: transparent;
+            color: #A4A4A4;
+            padding: 0;
+        }
+
+        /* ── Mobile ──────────────────────────────────────────────── */
+        @media (max-width: 520px) {
+            .modal {
+                max-width: 330px;
+            }
+
+            .modal__hero {
+                padding-bottom: 100%;
+            }
+
+            .modal__hero-text {
+                bottom: 20px;
+                left: 20px;
+                right: 110px;
+            }
+
+            .modal__headline {
+                font-size: 28px;
+                line-height: 0.94;
+            }
+
+            .modal__product-img {
+                width: 80px;
+                height: 80px;
+                bottom: 16px;
+                right: 16px;
+            }
+
+            .modal__content {
+                padding: 16px 20px 24px;
+            }
+
+            .modal__body {
+                font-size: 16px;
+                margin-bottom: 20px;
+            }
+
+            .modal__upgrade {
+                margin-bottom: 20px;
+            }
+
+            .modal__upgrade-text {
+                font-size: 16px;
+            }
+
+            .modal__cta-row {
+                gap: 12px;
+            }
+
+            .modal__btn {
+                height: 36px;
+                font-size: 12px;
+            }
+
+            .modal__btn--primary {
+                min-width: 110px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .overlay { overflow-y: scroll; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay">
+        <div class="modal">
+
+            <!-- ── Hero image panel ────────────────────────────── -->
+            <div class="modal__hero">
+                <img class="modal__hero-img"
+                     src="https://braze-images.com/appboy/communication/assets/image_assets/images/6a223c1f0f8ccc0084f0b253/original.png?1780628510"
+                     alt="Go Long lifestyle" />
+                <div class="modal__hero-gradient"></div>
+
+                <button onclick="brazeBridge.closeMessage()"
+                    class="modal__close" aria-label="Close">
+                    <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 2L18 18M18 2L2 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" />
+                    </svg>
+                </button>
+
+                <div class="modal__hero-text">
+                    <h1 class="modal__headline">We made<br>Go Long better</h1>
+                </div>
+
+                <img class="modal__product-img"
+                     src="https://braze-images.com/appboy/communication/assets/image_assets/images/6a223c891e1c1c0082327baa/original.png?1780628617"
+                     alt="Go Long" />
+            </div>
+
+            <!-- ── Content panel ───────────────────────────────── -->
+            <div class="modal__content">
+                <p class="modal__body">
+                    Faster absorption.<br>
+                    Stronger formula.<br>
+                    Better results.
+                </p>
+
+                <div class="modal__upgrade">
+                    <hr class="modal__divider" />
+                    <p class="modal__upgrade-text">Upgrade and save XX%.</p>
+                </div>
+
+                <div class="modal__cta-row">
+                    <a class="modal__btn modal__btn--primary" href="#"
+                       onclick="brazeBridge.logClick('0');">Upgrade Me</a>
+                    <a class="modal__btn modal__btn--ghost" href="#"
+                       onclick="brazeBridge.logClick('1');brazeBridge.closeMessage();">Skip For Now</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
