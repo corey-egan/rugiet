@@ -9,7 +9,11 @@ description: Rugiet's visual design system — color, typography, layout, photog
 
 The canonical design system lives in Figma:
 
-**[TODO: add Figma file URL]**
+Figma URL: https://www.figma.com/design/luQdtOfoEljv6TPkwegtFR/LCM-Rebrand-System?node-id=45-486&t=7tAa3DKqpKJdm0H4-1
+
+The canonical brand design system and style guide live in Claude Design:
+https://claude.ai/design/p/45b728ec-db8c-4fca-9f18-6035ff5bed1e?via=share
+
 
 For current tokens, component states, or layout specs, query the Figma MCP rather than relying on cached values in this skill. Examples of what to ask Figma directly:
 
@@ -65,7 +69,7 @@ _(References to be added as the system matures.)_
 - **Email template work** → `references/email-templates.md` (when created)
 - **Push / SMS visual considerations** (sender ID, emoji policy, link preview) → `references/short-form-format.md` (when created)
 - **Photography direction for a specific shoot or campaign** → `references/photo-direction.md` (when created)
-- **In-app message visual specs** → `references/in-app-patterns.md` (when created)
+- **In-app message visual specs** → `references/in-app-patterns.md`
 
 ---
 

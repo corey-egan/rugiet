@@ -14,11 +14,9 @@
         Design System handoff. Voice: performance medicine for men.
 
         Deployment checklist:
-        [ ] Upload the four Rugiet brand fonts (Review Regular, Review Bold,
-            Review Wide Black, Redward Mono Regular) to Braze:
-              Settings → Media Library → Font Assets
-            Then replace the four REPLACE_* tokens in the @font-face URLs
-            below with the appboy-images.com URLs Braze assigns.
+        [x] All brand fonts (Review Regular, Regular Italic, Bold,
+            Wide Black; Redward Mono Regular, Light) are uploaded to
+            Braze with production CDN URLs hardcoded below.
         [ ] Upload each slide image to Braze and swap the placeholder URLs
             (the assets/products/* webp paths) with hosted CDN URLs.
         [ ] Replace href="#" on each CTA with the destination URL or
@@ -49,9 +47,17 @@
             font-style: normal;
             font-display: swap;
             src: local('Review Regular'),
-                 url('https://appboy-images.com/appboy/communication/assets/font_assets/files/REPLACE_REVIEW_REGULAR/original.woff2') format('woff2'),
-                 url('./fonts/Review-Regular-Web.woff2') format('woff2'),
+                 url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a116c74d00887c750f/original.otf?1777428385') format('opentype'),
                  url('./fonts/Review-Regular.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Review';
+            font-weight: 400;
+            font-style: italic;
+            font-display: swap;
+            src: local('Review Regular Italic'),
+                 url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a0df9d180088c42cba/original.otf?1777428383') format('opentype'),
+                 url('./fonts/Review-RegularItalic.otf') format('opentype');
         }
         @font-face {
             font-family: 'Review';
@@ -59,7 +65,7 @@
             font-style: normal;
             font-display: swap;
             src: local('Review Bold'),
-                 url('https://appboy-images.com/appboy/communication/assets/font_assets/files/REPLACE_REVIEW_BOLD/original.otf') format('opentype'),
+                 url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a028ccd700880080e7/original.otf?1777428384') format('opentype'),
                  url('./fonts/Review-Bold.otf') format('opentype');
         }
         @font-face {
@@ -68,7 +74,7 @@
             font-style: normal;
             font-display: swap;
             src: local('Review Wide Black'),
-                 url('https://appboy-images.com/appboy/communication/assets/font_assets/files/REPLACE_REVIEWWIDE_BLACK/original.otf') format('opentype'),
+                 url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a024a17e008a3616f1/original.otf?1777428383') format('opentype'),
                  url('./fonts/ReviewWide-Black.otf') format('opentype');
         }
         @font-face {
@@ -77,9 +83,17 @@
             font-style: normal;
             font-display: swap;
             src: local('Redward Mono Regular'),
-                 url('https://appboy-images.com/appboy/communication/assets/font_assets/files/REPLACE_REDWARDMONO_REGULAR/original.woff2') format('woff2'),
-                 url('./fonts/Redward-Mono-Regular.woff2') format('woff2'),
+                 url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a0c08e29008ad72571/original.otf?1777428383') format('opentype'),
                  url('./fonts/Redward-Mono-Regular.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'Redward Mono';
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+            src: local('Redward Mono Light'),
+                 url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a093c3c90088050a48/original.otf?1777428383') format('opentype'),
+                 url('./fonts/Redward-Mono-Light.otf') format('opentype');
         }
 
         :root {
