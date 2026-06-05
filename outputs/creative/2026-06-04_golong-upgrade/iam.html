@@ -180,8 +180,9 @@
             position: absolute;
             bottom: 24px;
             left: 26px;
-            right: 80px;
+            right: 140px;
             z-index: 2;
+            text-align: left;
         }
 
         .modal__headline {
@@ -193,7 +194,7 @@
             text-transform: uppercase;
             color: var(--rugiet-white);
             margin: 0;
-            text-wrap: balance;
+            text-align: left;
         }
 
         .modal__product-img {
@@ -234,6 +235,7 @@
             flex-direction: column;
             padding: 20px 27px 30px;
             background-color: var(--rugiet-white);
+            text-align: left;
         }
 
         .modal__body {
@@ -244,6 +246,7 @@
             letter-spacing: -0.01em;
             color: var(--rugiet-gray-70);
             margin: 0 0 24px;
+            text-align: left;
         }
 
         /* ── Upgrade banner ──────────────────────────────────────── */
@@ -270,6 +273,7 @@
             letter-spacing: -0.01em;
             color: var(--rugiet-black);
             margin: 0;
+            text-align: left;
         }
 
         /* ── CTAs ────────────────────────────────────────────────── */
@@ -318,18 +322,25 @@
             }
 
             .modal__hero {
-                padding-bottom: 80%;
+                padding-bottom: 100%;
+            }
+
+            .modal__hero-text {
+                bottom: 20px;
+                left: 20px;
+                right: 110px;
             }
 
             .modal__headline {
-                font-size: 34px;
+                font-size: 28px;
+                line-height: 0.94;
             }
 
             .modal__product-img {
-                width: 90px;
-                height: 90px;
-                bottom: 18px;
-                right: 12px;
+                width: 80px;
+                height: 80px;
+                bottom: 16px;
+                right: 16px;
             }
 
             .modal__content {
@@ -376,7 +387,7 @@
             <!-- ── Hero image panel ────────────────────────────── -->
             <div class="modal__hero">
                 <img class="modal__hero-img"
-                     src="REPLACE_HERO_IMAGE"
+                     src="https://braze-images.com/appboy/communication/assets/image_assets/images/6a223c1f0f8ccc0084f0b253/original.png?1780628510"
                      alt="Go Long lifestyle" />
                 <div class="modal__hero-gradient"></div>
 
@@ -392,7 +403,7 @@
                 </div>
 
                 <img class="modal__product-img"
-                     src="REPLACE_PRODUCT_IMAGE"
+                     src="https://braze-images.com/appboy/communication/assets/image_assets/images/6a223c891e1c1c0082327baa/original.png?1780628617"
                      alt="Go Long" />
             </div>
 
