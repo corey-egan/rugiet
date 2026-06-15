@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<style>
+  @font-face {
+    font-family: 'Review';
+    src: url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a116c74d00887c750f/original.otf?1777428385') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Review';
+    src: url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a028ccd700880080e7/original.otf?1777428384') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Review Wide';
+    src: url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a024a17e008a3616f1/original.otf?1777428383') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --brand-amber: #F5A500;
+    --brand-black: #1A1A1A;
+    --brand-white: #FFFFFF;
+    --radius: 0;
+    --font-body: 'Review', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-display: 'Review Wide', 'Review', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  html, body {
+    height: 100%;
+    width: 100%;
+    font-family: var(--font-body);
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Modal container ── */
+  .modal {
+    position: relative;
+    width: 92vw;
+    max-width: 420px;
+    max-height: 96vh;
+    overflow-y: auto;
+    background: var(--brand-amber);
+    border-radius: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Close button ── */
+  .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .close-btn:hover { background: rgba(0, 0, 0, 0.55); }
+  .close-btn svg { width: 16px; height: 16px; }
+
+  /* ── Hero image ── */
+  .hero-img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ── Content area ── */
+  .content {
+    padding: 32px 28px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .headline {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--brand-black);
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+
+  .subhead {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--brand-black);
+    opacity: 0.85;
+    margin-bottom: 24px;
+    max-width: 320px;
+  }
+
+  /* ── Form ── */
+  .form-group { width: 100%; max-width: 340px; }
+
+  .email-input {
+    width: 100%;
+    height: 52px;
+    border: 2px solid var(--brand-black);
+    border-radius: var(--radius);
+    background: var(--brand-white);
+    padding: 0 16px;
+    font-size: 15px;
+    font-family: var(--font-body);
+    color: var(--brand-black);
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 12px;
+  }
+  .email-input::placeholder { color: var(--brand-amber); opacity: 0.8; }
+  .email-input:focus { border-color: var(--brand-black); }
+
+  .cta-btn {
+    width: 100%;
+    height: 54px;
+    border: 2px solid var(--brand-black);
+    border-radius: var(--radius);
+    background: var(--brand-black);
+    color: var(--brand-white);
+    font-size: 16px;
+    font-weight: 900;
+    font-family: var(--font-display);
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .cta-btn:hover { opacity: 0.88; }
+  .cta-btn:active { opacity: 0.75; }
+
+  /* ── Legal ── */
+  .legal {
+    margin-top: 16px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--brand-black);
+    opacity: 0.7;
+    text-align: center;
+    max-width: 340px;
+  }
+  .legal a {
+    color: var(--brand-black);
+    text-decoration: underline;
+  }
+
+  /* ── Error state ── */
+  .email-input.error { border-color: #c0392b; }
+  .error-msg {
+    color: #c0392b;
+    font-size: 12px;
+    margin-top: -8px;
+    margin-bottom: 8px;
+    display: none;
+  }
+  .error-msg.visible { display: block; }
+
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     DESKTOP: side-by-side at ≥ 680px
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  @media (min-width: 680px) {
+    .modal {
+      flex-direction: row;
+      max-width: 960px;
+      width: 94vw;
+      min-height: 520px;
+      max-height: 90vh;
+    }
+
+    .hero-wrapper {
+      flex: 0 0 50%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+      object-fit: cover;
+    }
+
+    .content {
+      flex: 1;
+      justify-content: center;
+      padding: 48px 44px;
+      text-align: center;
+    }
+
+    .headline { font-size: 32px; }
+    .subhead { font-size: 15px; }
+  }
+
+  /* ── Tall mobile screens ── */
+  @media (max-width: 679px) {
+    .hero-wrapper {
+      width: 100%;
+      flex-shrink: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="modal" role="dialog" aria-label="Father's Day sale">
+
+  <button class="close-btn" aria-label="Close" onclick="closeMessage()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
+      <line x1="6" y1="6" x2="18" y2="18"/>
+      <line x1="18" y1="6" x2="6" y2="18"/>
+    </svg>
+  </button>
+
+  <div class="hero-wrapper">
+    <!-- Replace src with your CDN-hosted image URL -->
+    <img
+      class="hero-img"
+      src="https://braze-images.com/appboy/communication/assets/image_assets/images/6a0b4cad7bba02009eba4d18/original.jpg?1779125420"
+      alt="Couple"
+      loading="eager"
+    />
+  </div>
+
+  <div class="content">
+    <h1 class="headline">20% off<br/>Father's Day sale</h1>
+    <p class="subhead">
+      Enter your email to get 20% off this Father's Day,
+      plus get early access to new products, exclusive offers,
+      and content worth reading.
+    </p>
+
+    <div class="form-group">
+      <input
+        class="email-input"
+        id="emailInput"
+        type="email"
+        placeholder="Your email"
+        autocomplete="email"
+        inputmode="email"
+        aria-label="Email address"
+      />
+      <p class="error-msg" id="errorMsg">Please enter a valid email address</p>
+      <button class="cta-btn" onclick="handleSubmit()">Take 20% off</button>
+    </div>
+
+    <p class="legal">
+      By signing up for our newsletter, you agree to our
+      <a href="https://www.rugiet.com/terms" target="_blank">Terms and Conditions</a>
+      and <a href="https://www.rugiet.com/privacy" target="_blank">Privacy Policy</a>.<br/>
+      Discount not applicable for TRT or Lab orders.
+    </p>
+  </div>
+
+</div>
+
+<script>
+  var bridge = window.brazeBridge || window.appboyBridge;
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function handleSubmit() {
+    var input = document.getElementById('emailInput');
+    var errorMsg = document.getElementById('errorMsg');
+    var email = (input.value || '').trim();
+
+    if (!isValidEmail(email)) {
+      input.classList.add('error');
+      errorMsg.classList.add('visible');
+      return;
+    }
+
+    input.classList.remove('error');
+    errorMsg.classList.remove('visible');
+
+    if (bridge) {
+      bridge.getUser().setEmail(email);
+      bridge.getUser().setCustomUserAttribute('fathers_day_2026_signup', true);
+      bridge.logClick(0);
+      bridge.closeMessage();
+    }
+  }
+
+  function closeMessage() {
+    if (bridge) {
+      bridge.closeMessage();
+    }
+  }
+
+  document.getElementById('emailInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') handleSubmit();
+  });
+
+  document.getElementById('emailInput').addEventListener('input', function() {
+    this.classList.remove('error');
+    document.getElementById('errorMsg').classList.remove('visible');
+  });
+</script>
+
+</body>
+</html>
