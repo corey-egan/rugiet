@@ -10,16 +10,17 @@ This skill governs every word Rugiet publishes. Load the right references before
 ## Order of precedence (non-negotiable)
 
 1. **`references/compliance.md`** — legal floor. Cannot be overridden by tone or channel rules. Load on every drafting task.
-2. **`references/tone-of-voice.md`** — authoritative voice. Sets who Rugiet is, who we talk to, and how.
-3. **`references/owned-channels.md`** — translates TOV into operating rules for email and website.
-4. **`references/lifecycle-channels.md`** *(when added)* — push, SMS, in-app.
-5. **`references/paid-channels.md`** *(when added)* — paid social, ads, acquisition.
+2. **`references/trademark-usage.md`** — registered vs unregistered marks, symbol rules, first-mention protocol. Load on every drafting task.
+3. **`references/tone-of-voice.md`** — authoritative voice. Sets who Rugiet is, who we talk to, and how.
+4. **`references/owned-channels.md`** — translates TOV into operating rules for email and website.
+5. **`references/lifecycle-channels.md`** *(when added)* — push, SMS, in-app.
+6. **`references/paid-channels.md`** *(when added)* — paid social, ads, acquisition.
 
 When voice and channel docs conflict, the channel doc wins (it has dialed TOV for that surface). When anything conflicts with compliance, compliance wins.
 
 ## Loading rules
 
-- Any patient-facing copy → load `compliance.md` always.
+- Any patient-facing copy → load `compliance.md` and `trademark-usage.md` always.
 - Email or website work → also load `owned-channels.md`.
 - Push, SMS, in-app → load `lifecycle-channels.md` if it exists; surface the gap if it doesn't.
 - Paid social or ads → load `paid-channels.md` if it exists; surface the gap if it doesn't.
