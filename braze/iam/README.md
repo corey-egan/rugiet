@@ -16,6 +16,7 @@ IAMs (with real copy, real product names, real offer lines) belong in
 |---|---|
 | `carousel.html` | Multi-slide carousel modal (Siema + `appboyBridge`). Suited for onboarding, education, and product lineup showcases. |
 | `single-panel.html` | Stacked hero-image-over-content modal (`brazeBridge`). Suited for product announcements, upsells, and single-message promotions. Derived from Figma Website file, node `6025:1587`. |
+| `side-by-side.html` | Image-left / content-right on desktop (≥ 680px), stacking vertically on mobile (`brazeBridge`). Suited for email capture, seasonal promos, and campaigns where a hero lifestyle image should sit alongside the copy. Includes inline form with email validation. |
 | `tokens.css` | Brand tokens (colors, type roles, button + pill primitives). **Not loaded by templates** — it is a copy-from-here reference for designers building new IAMs. |
 | `fonts/` | Rugiet brand webfonts (Pangram Pangram: Review, Review Wide Black, Redward Mono). Committed for local preview; production deployment needs each `.otf` uploaded to Braze's Media Library so every template can reference the Braze-hosted URL. |
 | `assets/logo/logomark.svg` | The Rugiet logomark (single SVG, paints with `currentColor`). |
