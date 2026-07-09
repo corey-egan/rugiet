@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<style>
+  @font-face {
+    font-family: 'Review';
+    src: url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a116c74d00887c750f/original.otf?1777428385') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Review';
+    src: url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a028ccd700880080e7/original.otf?1777428384') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Review Wide';
+    src: url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a024a17e008a3616f1/original.otf?1777428383') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Redward Mono';
+    src: url('https://braze-images.com/appboy/communication/assets/font_assets/files/69f167a0c08e29008ad72571/original.otf?1777428383') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rugiet-black:   #000000;
+    --rugiet-white:   #FFFFFF;
+    --rugiet-orange:  #FFA202;
+    --rugiet-cream:   #FFFCF9;
+    --rugiet-gray-10: #E7E5E4;
+    --rugiet-gray-30: #A8A29F;
+    --rugiet-gray-70: #1B1917;
+    --rugiet-product-golong: #6C8A6A;
+    --font-body: 'Review', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-display: 'Review Wide', 'Review', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: 'Redward Mono', 'JetBrains Mono', ui-monospace, monospace;
+    --ease-out: cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  html, body {
+    height: 100%;
+    width: 100%;
+    font-family: var(--font-body);
+    background: rgba(0, 0, 0, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .modal {
+    position: relative;
+    width: 92vw;
+    max-width: 440px;
+    max-height: 96vh;
+    overflow-y: auto;
+    background: var(--rugiet-white);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Top accent bar ── */
+  .accent-bar {
+    height: 6px;
+    background: var(--rugiet-product-golong);
+    flex-shrink: 0;
+  }
+
+  /* ── Close button ── */
+  .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--rugiet-gray-30);
+    transition: color 0.2s var(--ease-out);
+    padding: 0;
+  }
+  .close-btn:hover { color: var(--rugiet-black); }
+  .close-btn svg { width: 18px; height: 18px; }
+
+  /* ── Content area ── */
+  .content {
+    padding: 44px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--rugiet-product-golong);
+    margin-bottom: 20px;
+  }
+
+  .discount {
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--rugiet-black);
+    margin-bottom: 8px;
+  }
+
+  .headline {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--rugiet-black);
+    margin-bottom: 16px;
+  }
+
+  .divider {
+    width: 40px;
+    height: 2px;
+    background: var(--rugiet-product-golong);
+    border: none;
+    margin-bottom: 16px;
+  }
+
+  .subhead {
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--rugiet-gray-70);
+    margin-bottom: 28px;
+    max-width: 340px;
+  }
+
+  /* ── Form ── */
+  .form-group {
+    width: 100%;
+    max-width: 340px;
+  }
+
+  .email-input {
+    width: 100%;
+    height: 50px;
+    border: 1.5px solid var(--rugiet-gray-10);
+    background: var(--rugiet-cream);
+    padding: 0 16px;
+    font-size: 15px;
+    font-family: var(--font-body);
+    color: var(--rugiet-black);
+    outline: none;
+    transition: border-color 0.2s var(--ease-out);
+    margin-bottom: 12px;
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+  .email-input::placeholder { color: var(--rugiet-gray-30); }
+  .email-input:focus { border-color: var(--rugiet-product-golong); }
+
+  .cta-btn {
+    width: 100%;
+    height: 50px;
+    border: none;
+    background: var(--rugiet-black);
+    color: var(--rugiet-white);
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--font-body);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.24s var(--ease-out);
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+  .cta-btn:hover { opacity: 0.88; }
+  .cta-btn:active { opacity: 0.75; }
+
+  .dismiss {
+    margin-top: 14px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--rugiet-gray-30);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: color 0.2s var(--ease-out);
+    padding: 0;
+  }
+  .dismiss:hover { color: var(--rugiet-gray-70); }
+
+  /* ── Legal ── */
+  .legal {
+    margin-top: 20px;
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--rugiet-gray-30);
+    text-align: center;
+    max-width: 340px;
+  }
+  .legal a {
+    color: var(--rugiet-gray-30);
+    text-decoration: underline;
+  }
+
+  /* ── Error state ── */
+  .email-input.error { border-color: #c0392b; }
+  .error-msg {
+    color: #c0392b;
+    font-size: 12px;
+    margin-top: -8px;
+    margin-bottom: 8px;
+    display: none;
+    text-align: left;
+  }
+  .error-msg.visible { display: block; }
+
+  /* ── Mobile adjustments ── */
+  @media (max-width: 480px) {
+    .modal { max-width: 340px; }
+
+    .content { padding: 36px 24px 28px; }
+
+    .discount { font-size: 46px; }
+
+    .headline { font-size: 19px; }
+
+    .subhead { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="modal" role="dialog" aria-label="Go Long 15% off">
+
+  <div class="accent-bar"></div>
+
+  <button class="close-btn" aria-label="Close" onclick="closeMessage()">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square">
+      <line x1="4" y1="4" x2="16" y2="16"/>
+      <line x1="16" y1="4" x2="4" y2="16"/>
+    </svg>
+  </button>
+
+  <div class="content">
+    <p class="eyebrow">Go Long — sexual health</p>
+
+    <p class="discount">15% off</p>
+    <h1 class="headline">Your first order</h1>
+
+    <hr class="divider" />
+
+    <p class="subhead">
+      Go Long is a daily prescription formulated to help men last longer and perform with confidence. Enter your email and the discount is yours.
+    </p>
+
+    <div class="form-group">
+      <input
+        class="email-input"
+        id="emailInput"
+        type="email"
+        placeholder="Your email"
+        autocomplete="email"
+        inputmode="email"
+        aria-label="Email address"
+      />
+      <p class="error-msg" id="errorMsg">Enter a valid email address</p>
+      <button class="cta-btn" onclick="handleSubmit()">Get 15% off</button>
+      <button class="dismiss" onclick="dismissMessage()">No thanks</button>
+    </div>
+
+    <p class="legal">
+      By signing up, you agree to Rugiet's
+      <a href="https://www.rugiet.com/terms" target="_blank">terms</a>
+      and <a href="https://www.rugiet.com/privacy" target="_blank">privacy policy</a>.
+      Discount applies to first Go Long order only. Cannot be combined with other offers.
+    </p>
+  </div>
+
+</div>
+
+<script>
+  var bridge = window.brazeBridge || window.appboyBridge;
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function handleSubmit() {
+    var input = document.getElementById('emailInput');
+    var errorMsg = document.getElementById('errorMsg');
+    var email = (input.value || '').trim();
+
+    if (!isValidEmail(email)) {
+      input.classList.add('error');
+      errorMsg.classList.add('visible');
+      return;
+    }
+
+    input.classList.remove('error');
+    errorMsg.classList.remove('visible');
+
+    if (bridge) {
+      bridge.getUser().setEmail(email);
+      bridge.getUser().setCustomUserAttribute('golong_15_email_capture', true);
+      bridge.logClick(0);
+      bridge.closeMessage();
+    }
+  }
+
+  function dismissMessage() {
+    if (bridge) {
+      bridge.logClick(1);
+      bridge.closeMessage();
+    }
+  }
+
+  function closeMessage() {
+    if (bridge) {
+      bridge.closeMessage();
+    }
+  }
+
+  document.getElementById('emailInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') handleSubmit();
+  });
+
+  document.getElementById('emailInput').addEventListener('input', function() {
+    this.classList.remove('error');
+    document.getElementById('errorMsg').classList.remove('visible');
+  });
+</script>
+
+</body>
+</html>
